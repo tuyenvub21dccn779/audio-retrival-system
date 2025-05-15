@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio KDTree Search</title>
+</head>
+<body>
+    <h1>🔊 Tìm kiếm âm thanh tương tự bằng KDTree</h1>
+
+    <form action="/" enctype="multipart/form-data" method="post">
+        <input name="file" type="file" accept="audio/*">
+        <button type="submit">Tải lên và tìm</button>
+    </form>
+
+    {% if uploaded_file %}
+    <h3>🆕 File vừa tải lên:</h3>
+    <audio controls>
+        <source src="{{ url_for('static', path='uploads/' + uploaded_file) }}" type="audio/wav">
+        Trình duyệt không hỗ trợ audio.
+    </audio>
+    {% endif %}
+
+    {% if results %}
+    <h3>🎯 Top 3 âm thanh tương tự:</h3>
+    <ul>
+        {% for i in range(0, (results | length)) %}
+        <li>
+            <b>File Thứ {{ i + 1 }}</b> 
+            <br>(khoảng cách Minkowsi: {{ "%.3f"|format(results[i][1]) }})<br>
+            <audio controls>
+                <source src="{{ results[i][0] }}" type="audio/wav">
+            </audio>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- <h3>📁 Danh sách các file đã có:</h3>
+    <ul>
+        {% for f in files %}
+        <li>{{ f }}</li>
+        {% endfor %}
+    </ul> -->
+</body>
+</html>
